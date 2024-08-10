@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PrinceOsorioNGL Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+        .purple {
+            color: #6c5ce7;
+        }
+        .success {
+            color: #34c759;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        button[type="submit"] {
+            width: 100%;
+            height: 40px;
+            font-size: 18px;
+            background-color: #6c5ce7;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #5c4ccf;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+            textarea {
+                height: 150px;
+            }
+            button[type="submit"] {
+                height: 30px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="purple">Send Prince an anonymous message.</h1>
+        <p>Please note that you can only send one message every 2 hours to prevent abuse.</p>
+        <form id="ngl-form">
+            <textarea id="ngl-message" placeholder="Enter your message"></textarea>
+            <button id="ngl-submit" class="purple">Submit</button>
+            <div id="ngl-response"></div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('ngl-form');
+        const messageInput = document.getElementById('ngl-message');
+        const submitButton = document.getElementById('ngl-submit');
+        const responseDiv = document.getElementById('ngl-response');
+        let cooldown = false;
+        let cooldownTimeout = null;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (cooldown) {
+                responseDiv.innerHTML = `<p class="error">You need to wait 2 hours before sending another message.</p>`;
+                return;
+            }
+            const message = messageInput.value.trim();
+            if (message) {
+                send_message(message);
+                messageInput.value = '';
+                cooldown = true;
+                cooldownTimeout = setTimeout(() => {
+                    cooldown = false;
+                }, 2 * 60 * 60 * 1000); // 2 hours
+            }
+        });
+
+        function send_message(message) {
+            const telegramBotToken = '7333672440:AAGbd2QBadr7rnPv134QjlBfyi63sDOyIDo';
+            const chatId = '6737958161';
+            const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${message}`;
+
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.ok) {
+                        responseDiv.innerHTML = `<p class="success">Message sent successfully!</p>`;
+                    } else {
+                        responseDiv.innerHTML = `<p class="error">Error sending message.</p>`;
+                    }
+                })
+                .catch((error) => {
+                    responseDiv.innerHTML = `<p class="error">Error sending message.</p>`;
+                });
+        }
+    </script>
+</body>
+</html>
