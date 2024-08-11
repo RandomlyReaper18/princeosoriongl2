@@ -56,6 +56,35 @@ button[type="submit"]:hover {
     margin-top: 20px;
 }
 
+.social-media {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.social-media ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    color: #8c8476;
+}
+
+.social-media li {
+    margin: 0 10px;
+}
+
+.social-media a {
+    color: #000000; /* white text */
+    text-decoration: none;
+    font-size:40px;
+}
+
+.social-media a:hover {
+    color: #000000; /* light gray text */
+}
+
 @keyframes animate-heading {
     0% {
         transform: translateY(-100%);
