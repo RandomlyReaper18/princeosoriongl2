@@ -26,7 +26,7 @@ form.addEventListener('submit', (e) => {
 function send_message(message) {
     const telegramBotToken = import.meta.env.VITE_TELEGRAM_BOT_APIKEY;
     const chatId = '6737958161';
-    const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${message}`;
+    const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
     fetch(url)
         .then((response) => response.json())
